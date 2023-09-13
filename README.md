@@ -43,7 +43,6 @@
 
 - **[add new students and teachers]**
 - **[add books]**
-- **[Ruby Classes]**
 - **[Save book records]**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
