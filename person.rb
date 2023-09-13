@@ -8,7 +8,7 @@ class Person
   attr_accessor :name, :age
   attr_reader :id
 
-  def _age?
+  private def _age?
     @age >= 18
   end
 
@@ -16,8 +16,3 @@ class Person
     true unless !_age? && !@parent_permission
   end
 end
-
-# person=Person.new(20,"samuel")
-# puts person.name
-# puts person._age?
-# puts person.can_use_services?
