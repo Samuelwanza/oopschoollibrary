@@ -15,6 +15,10 @@ class Person < Nameable
     true unless !_age? && !@parent_permission
   end
 
+  def add_rental(book, date)
+    @rental.push(Rental.new(date, book, self))
+  end
+
   private
 
   def _age?
