@@ -1,3 +1,4 @@
+require './rental'
 class Book
   def initialize(title, author)
     @title = title
