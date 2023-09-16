@@ -88,8 +88,8 @@ Install Ruby [https://www.ruby-lang.org/en/documentation/installation/]
 
 > Describe 1 - 3 features you will add to the project.
 
-- [ ] **[]**
-- [ ] **[]**
+- [ ] **[Add authentication functionalit]**
+- [ ] **[Build an interface for the library]**
 - [ ] **[]**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
