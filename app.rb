@@ -7,7 +7,6 @@ class App
     @books = []
     @people = []
     @rentals = []
-
   end
 
   def listbooks
@@ -31,9 +30,9 @@ class App
     choice = gets.chomp
     if choice == '1'
       print 'Age:'
-      age = gets.chomp
+      gets.chomp
       print 'Name:'
-      name = gets.chomp
+      gets.chomp
       print 'Has Parent Permission?[Y/N]:'
       parent_permission = gets.chomp
       parent_permission = parent_permission.downcase
@@ -61,16 +60,19 @@ class App
       puts 'invalid entry'
     end
   end
+
   def no_parent_permission
     student = Student.new(age, name, false, nil) # Provide all four arguments
     @peopl.push(student)
     puts 'Person created successfully'
   end
+
   def having_parent_permission
     student = Student.new(age, name, true, nil)
     @people.push(student)
     puts 'Person created successfully'
   end
+
   def createbook
     print 'Title:'
     title = gets.chomp
@@ -107,4 +109,3 @@ class App
     end
   end
 end
-
