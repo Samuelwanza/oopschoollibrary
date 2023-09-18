@@ -30,16 +30,16 @@ class App
     choice = gets.chomp
     if choice == '1'
       print 'Age:'
-      gets.chomp
+      age = gets.chomp.to_i
       print 'Name:'
-      gets.chomp
+      name = gets.chomp
       print 'Has Parent Permission?[Y/N]:'
       parent_permission = gets.chomp
       parent_permission = parent_permission.downcase
       if parent_permission == 'n'
-        no_parent_permission
+        no_parent_permission(age, name)
       elsif parent_permission == 'y'
-        having_parent_permission
+        having_parent_permission(age, name)
       else
         puts 'invalid permission input'
         puts 'person creation failed'
@@ -61,13 +61,13 @@ class App
     end
   end
 
-  def no_parent_permission
+  def no_parent_permission(age, name)
     student = Student.new(age, name, false, nil) # Provide all four arguments
     @peopl.push(student)
     puts 'Person created successfully'
   end
 
-  def having_parent_permission
+  def having_parent_permission(age, name)
     student = Student.new(age, name, true, nil)
     @people.push(student)
     puts 'Person created successfully'
