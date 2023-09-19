@@ -3,7 +3,7 @@ require './teacher'
 require './book'
 require './rental'
 class App
-  def initialize
+  def initialize()
     @books = []
     @people = []
     @rentals = []
@@ -30,24 +30,19 @@ class App
     choice = gets.chomp
     if choice == '1'
       print 'Age:'
-      age = gets.chomp
+      age = gets.chomp.to_i
       print 'Name:'
       name = gets.chomp
       print 'Has Parent Permission?[Y/N]:'
       parent_permission = gets.chomp
       parent_permission = parent_permission.downcase
       if parent_permission == 'n'
-        student = Student.new(age, name, false, nil) # Provide all four arguments
-        @peopl.push(student)
-        puts 'Person created successfully'
+        having_parent_permission(age, name, false)
       elsif parent_permission == 'y'
-        student = Student.new(age, name, true, nil)
-        @people.push(student)
-        puts 'Person created successfully'
+        having_parent_permission(age, name, true)
       else
         puts 'invalid permission input'
         puts 'person creation failed'
-        nil
       end
 
     elsif choice == '2'
@@ -63,6 +58,12 @@ class App
     else
       puts 'invalid entry'
     end
+  end
+
+  def having_parent_permission(age, name, state)
+    student = Student.new(age, name, state, nil)
+    @people.push(student)
+    puts 'Person created successfully'
   end
 
   def createbook

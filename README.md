@@ -80,7 +80,10 @@ Install Ruby [https://www.ruby-lang.org/en/documentation/installation/]
 - Twitter: [@Samuelwanza](https://twitter.com/samuelmunguti9)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/samuel-munguti-8a257a1bb/)
 
+👤 **Mahdi Noori**
 
+- GitHub: [@Mahdi Noori](https://github.com/mahdinoori2000)
+- LinkedIn: [@Mahdi Noori](https://www.linkedin.com/in/mahdi-noori-hc201/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
