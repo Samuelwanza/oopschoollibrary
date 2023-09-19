@@ -37,13 +37,12 @@ class App
       parent_permission = gets.chomp
       parent_permission = parent_permission.downcase
       if parent_permission == 'n'
-        no_parent_permission(age, name)
+        having_parent_permission(age, name, false)
       elsif parent_permission == 'y'
-        having_parent_permission(age, name)
+        having_parent_permission(age, name, true)
       else
         puts 'invalid permission input'
         puts 'person creation failed'
-        nil
       end
 
     elsif choice == '2'
@@ -61,14 +60,8 @@ class App
     end
   end
 
-  def no_parent_permission(age, name)
-    student = Student.new(age, name, false, nil) # Provide all four arguments
-    @peopl.push(student)
-    puts 'Person created successfully'
-  end
-
-  def having_parent_permission(age, name)
-    student = Student.new(age, name, true, nil)
+  def having_parent_permission(age, name, state)
+    student = Student.new(age, name, state, nil)
     @people.push(student)
     puts 'Person created successfully'
   end
