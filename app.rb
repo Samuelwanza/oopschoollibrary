@@ -2,11 +2,14 @@ require './student'
 require './teacher'
 require './book'
 require './rental'
+require 'json'
 class App
   def initialize()
     @books = []
     @people = []
     @rentals = []
+
+    load_data
   end
 
   def listbooks
@@ -101,4 +104,29 @@ class App
       end
     end
   end
+  def load_data
+    if File.exist?('rentals.json')
+      data = File.read('rentals.json')
+      rentals = JSON.parse(data)
+      rentals.map do |rental|
+        new_rental = Rental.new(rental['date'], rental['books'], rental['people'])
+        @rentals.push(new_rental)
+      end
+      # @rentals = rentals
+    end
+  end
+
+  def save_data
+    File.open('rentals.json', 'w') do |file|
+      file.write(JSON.pretty_generate(@rentals))
+    end
+  end
+  
+  def exit_app
+      puts 'Thank for using this app!'
+      save_data
+      exit
+  end 
 end
+load = App.new
+puts load.load_data
