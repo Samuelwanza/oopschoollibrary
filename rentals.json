@@ -1,3 +1,15 @@
 [
-  "#<Rental:0x000002589088d840>"
+  {
+    "date": "23/12/2003",
+    "book": {
+      "title": "book",
+      "author": "book"
+    },
+    "person": {
+      "age": 23,
+      "name": "sam",
+      "id": 490,
+      "parent_permission": true
+    }
+  }
 ]

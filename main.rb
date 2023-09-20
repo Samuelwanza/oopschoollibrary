@@ -29,7 +29,7 @@ def main
     choice = gets.chomp
     if options.key?(choice)
       action = options[choice]
-        app1.send(action)
+      app1.send(action)
     else
       puts 'Invalid entry'
     end

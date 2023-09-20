@@ -104,29 +104,58 @@ class App
       end
     end
   end
-  def load_data
-    if File.exist?('rentals.json')
-      data = File.read('rentals.json')
-      rentals = JSON.parse(data)
-      rentals.map do |rental|
-        new_rental = Rental.new(rental['date'], rental['books'], rental['people'])
-        @rentals.push(new_rental)
-      end
-      # @rentals = rentals
-    end
-  end
 
-  def save_data
-    File.open('rentals.json', 'w') do |file|
-      file.write(JSON.pretty_generate(@rentals))
+  def load_data
+    return unless File.exist?('rentals.json')
+  
+    data = File.read('rentals.json')
+    rentals = JSON.parse(data)
+    rentals.each do |rental_data|
+      book = Book.new(rental_data['book']['title'], rental_data['book']['author'])
+      
+      person_data = rental_data['person']
+  
+      if person_data['specialization']
+        person = Teacher.new(person_data['age'], person_data['name'], person_data['specialization'])
+      else
+        person = Student.new(person_data['age'], person_data['name'], person_data['parent_permission'])
+      end
+      person.id=person_data['id']
+      new_rental = Rental.new(rental_data['date'], book, person)
+      @rentals.push(new_rental)
     end
   end
   
+
+  def save_data
+    rentals_data = @rentals.map do |rental|
+      person_data = {
+        'age' => rental.person.age,
+        'name' => rental.person.name,
+        'id' => rental.person.id,
+        'parent_permission' => rental.person.parent_permission
+      }
+
+      person_data['specialization'] = rental.person.specialization if rental.person.is_a?(Teacher)
+
+      {
+        'date' => rental.date,
+        'book' => {
+          'title' => rental.book.title,
+
+          'author' => rental.book.author
+        },
+        'person' => person_data
+      }
+    end
+    File.write('rentals.json', JSON.pretty_generate(rentals_data))
+  end
+
   def exit_app
-      puts 'Thank for using this app!'
-      save_data
-      exit
-  end 
+    puts 'Thank for using this app!'
+    save_data
+    exit
+  end
 end
-load = App.new
-puts load.load_data
+App.new
+# puts load.load_data
