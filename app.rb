@@ -3,7 +3,12 @@ require './teacher'
 require './book'
 require './rental'
 require 'json'
+require_relative 'save_module'
+require_relative 'load_module'
+
 class App
+  include SaveModule
+  include LoadModule
   def initialize()
     @books = []
     @people = []
@@ -12,9 +17,7 @@ class App
     load_data
     load_people
   end
-  ############### 
-  # CREATE PERSON
-  ############### 
+
   def createperson
     print 'Do you want to create a student (1) or a teacher (2)? [Input the number]:'
     choice = gets.chomp
@@ -34,7 +37,6 @@ class App
         puts 'invalid permission input'
         puts 'person creation failed'
       end
-
     elsif choice == '2'
       print 'Age:'
       age = gets.chomp
@@ -55,19 +57,17 @@ class App
     @people.push(student)
     puts 'Person created successfully'
   end
-  # list person 
+
   def listpeople
     @people.each_with_index do |person, index|
-    if person.instance_of?(Student)
-      puts "(#{index}) [Student] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
-    elsif person.instance_of?(Teacher)
-      puts "(#{index}) [Teacher] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}, specialization specialization: #{person.specialization}"
+      if person.instance_of?(Student)
+        puts "(#{index}) [Student] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
+      elsif person.instance_of?(Teacher)
+        puts "(#{index}) [Teacher] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
+      end
+    end
   end
-end
-end
-  ############### 
-  # CREATE BOOK
-  ###############
+
   def createbook
     print 'Title:'
     title = gets.chomp
@@ -84,10 +84,6 @@ end
     end
   end
 
-  
-  ############### 
-  # CREATE RENTAL
-  ###############
   def createrental
     puts 'Select a book from the following list by number'
     listbooks
@@ -114,130 +110,6 @@ end
     end
   end
 
-  ############### 
-  # LOAD DATA
-  ###############
-  #LOAD BOOK
-  def load_books
-    return [] unless File.exist?('books.json')
-  
-    data = File.read('books.json')
-    books_data = JSON.parse(data)
-    books_data.map { |book_data| 
-    new_book =Book.new(book_data['title'], book_data['author']) 
-    @books.push(new_book)
-    }
-  end
-  #LOAD PEOPLE 
-  def load_people
-    return unless File.exist?('people.json')
-    
-    data = File.read('people.json')
-    people_data = JSON.parse(data)
-    
-    people_data.each do |person_data|
-      if person_data['type'] == 'teacher'
-        person = Teacher.new(person_data['age'], person_data['specialization'], person_data['name'])
-      elsif person_data['type'] == 'student'
-        person = Student.new(person_data['age'], person_data['name'], person_data['parent_permission'])
-      end
-      
-      person.id = person_data['id']
-      @people.push(person)
-    end
-  end
-  
-  #LOAD DATA
-  def load_data
-    return unless File.exist?('rentals.json')
-  
-    data = File.read('rentals.json')
-    rentals = JSON.parse(data)
-    rentals.each do |rental_data|
-      book = Book.new(rental_data['book']['title'], rental_data['book']['author'])
-      
-      person_data = rental_data['person']
-  
-      if person_data['specialization']
-        person = Teacher.new(person_data['age'], person_data['name'], person_data['specialization'])
-      else
-        person = Student.new(person_data['age'], person_data['name'], person_data['parent_permission'])
-      end
-      person.id=person_data['id']
-      new_rental = Rental.new(rental_data['date'], book, person)
-      @rentals.push(new_rental)
-    end
-  end
-  
-  ############### 
-  # SAVE DATA
-  ###############
-
-  # SAVE BOOK
-  def save_books
-    books_data = @books.map do |book|
-      {
-        'title' => book.title,
-        'author' => book.author
-      }
-    end
-    File.write('books.json', JSON.pretty_generate(books_data))
-  end
-
-# SAVE PEOPLE
-def save_people
-  people_data = @people.map do |person|
-    if person.is_a?(Teacher)
-      person_data = {
-      'age' => person.age,
-      'name' => person.name,
-      'id' => person.id,
-      'specialization' => person.specialization,
-      'type' => 'teacher'
-    }
-    elsif person.is_a?(Student)
-      person_data = {
-      'age' => person.age,
-      'name' => person.name,
-      'id' => person.id,
-      'parent_permission' => person.parent_permission,
-      'type' => 'student'
-    }
-    end
-    person_data
-  end
-  File.write('people.json', JSON.pretty_generate(people_data))
-end
-
-
-  #SAVE RENTAL
-  def save_data
-    rentals_data = @rentals.map do |rental|
-      person_data = {
-        'age' => rental.person.age,
-        'name' => rental.person.name,
-        'id' => rental.person.id,
-        'parent_permission' => rental.person.parent_permission
-      }
-
-      person_data['specialization'] = rental.person.specialization if rental.person.is_a?(Teacher)
-
-      {
-        'date' => rental.date,
-        'book' => {
-          'title' => rental.book.title,
-          'author' => rental.book.author
-        },
-        'person' => person_data
-      }
-    end
-    File.write('rentals.json', JSON.pretty_generate(rentals_data))
-  end
-
-
-  ############### 
-  # EXIT APP
-  ###############
   def exit_app
     puts 'Thank for using this app!'
     save_data
