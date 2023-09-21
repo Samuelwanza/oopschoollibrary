@@ -18,7 +18,7 @@
 
 # 📖 [oops school library system] <a name="about-project"></a>
 
-**[oops school library system]** is a project that utilizes oops in ruby and allows users from oop uiversity to add new students or teachers,add new books, save records of who borrowed a given book and when.
+**oops school library system** is a project that utilizes oops in ruby and allows users from oop uiversity to add new students or teachers,add new books, save records of who borrowed a given book and when.
 
 ## 🛠 Built With <a name="built-with"></a>
 
@@ -31,18 +31,11 @@
   </ul>
 </details>
 
-<details>
-<summary>Database</summary>
-  <ul>
-    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
-  </ul>
-</details>
-
 ### Key Features <a name="key-features"></a>
 
-- **[add new students and teachers]**
-- **[add books]**
-- **[Save book records]**
+- **add new students and teachers**
+- **add books**
+- **Save book records**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -89,11 +82,9 @@ Install Ruby [https://www.ruby-lang.org/en/documentation/installation/]
 
 ## 🔭 Future Features <a name="future-features"></a>
 
-> Describe 1 - 3 features you will add to the project.
 
-- [ ] **[Add authentication functionalit]**
-- [ ] **[Build an interface for the library]**
-- [ ] **[]**
+- [ ] **Add authentication functionalit**
+- [ ] **Build an interface for the library**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
