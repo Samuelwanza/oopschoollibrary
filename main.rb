@@ -21,7 +21,7 @@ def main
     '4' => :createbook,
     '5' => :createrental,
     '6' => :listpersonsrentals,
-    '7' => :exit
+    '7' => :exit_app
   }
 
   loop do
@@ -29,13 +29,7 @@ def main
     choice = gets.chomp
     if options.key?(choice)
       action = options[choice]
-      if action == :exit
-        puts 'Thank for using this app!'
-        return
-      else
-        app1.send(action)
-      end
-
+      app1.send(action)
     else
       puts 'Invalid entry'
     end

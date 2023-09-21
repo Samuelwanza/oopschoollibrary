@@ -2,27 +2,20 @@ require './student'
 require './teacher'
 require './book'
 require './rental'
+require 'json'
+require_relative 'save_module'
+require_relative 'load_module'
+
 class App
+  include SaveModule
+  include LoadModule
   def initialize()
     @books = []
     @people = []
     @rentals = []
-  end
-
-  def listbooks
-    @books.each_with_index do |book, index|
-      puts "(#{index}) Title: #{book.title}, Author: #{book.author}"
-    end
-  end
-
-  def listpeople
-    @people.each_with_index do |person, index|
-      if person.instance_of?(Student)
-        puts "(#{index}) [Student] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
-      else
-        puts "(#{index}) [Teacher] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
-      end
-    end
+    load_books
+    load_data
+    load_people
   end
 
   def createperson
@@ -44,7 +37,6 @@ class App
         puts 'invalid permission input'
         puts 'person creation failed'
       end
-
     elsif choice == '2'
       print 'Age:'
       age = gets.chomp
@@ -66,6 +58,16 @@ class App
     puts 'Person created successfully'
   end
 
+  def listpeople
+    @people.each_with_index do |person, index|
+      if person.instance_of?(Student)
+        puts "(#{index}) [Student] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
+      elsif person.instance_of?(Teacher)
+        puts "(#{index}) [Teacher] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
+      end
+    end
+  end
+
   def createbook
     print 'Title:'
     title = gets.chomp
@@ -74,6 +76,12 @@ class App
     book = Book.new(title, author)
     @books.push(book)
     puts 'Book created successfully'
+  end
+
+  def listbooks
+    @books.each_with_index do |book, index|
+      puts "(#{index}) Title: #{book.title}, Author: #{book.author}"
+    end
   end
 
   def createrental
@@ -100,5 +108,13 @@ class App
         puts "Date: #{rental.date} Book '#{rental.book.title}' by #{rental.book.author} "
       end
     end
+  end
+
+  def exit_app
+    puts 'Thank for using this app!'
+    save_data
+    save_books
+    save_people
+    exit
   end
 end
