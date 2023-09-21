@@ -8,26 +8,12 @@ class App
     @books = []
     @people = []
     @rentals = []
-
+    load_books
     load_data
   end
-
-  def listbooks
-    @books.each_with_index do |book, index|
-      puts "(#{index}) Title: #{book.title}, Author: #{book.author}"
-    end
-  end
-
-  def listpeople
-    @people.each_with_index do |person, index|
-      if person.instance_of?(Student)
-        puts "(#{index}) [Student] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
-      else
-        puts "(#{index}) [Teacher] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
-      end
-    end
-  end
-
+  ############### 
+  # CREATE PERSON
+  ############### 
   def createperson
     print 'Do you want to create a student (1) or a teacher (2)? [Input the number]:'
     choice = gets.chomp
@@ -68,7 +54,20 @@ class App
     @people.push(student)
     puts 'Person created successfully'
   end
+  # list person 
+  def listpeople
+    @people.each_with_index do |person, index|
+      if person.instance_of?(Student)
+        puts "(#{index}) [Student] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
+      else
+        puts "(#{index}) [Teacher] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
+      end
+    end
+  end
 
+  ############### 
+  # CREATE BOOK
+  ###############
   def createbook
     print 'Title:'
     title = gets.chomp
@@ -79,6 +78,16 @@ class App
     puts 'Book created successfully'
   end
 
+  def listbooks
+    @books.each_with_index do |book, index|
+      puts "(#{index}) Title: #{book.title}, Author: #{book.author}"
+    end
+  end
+
+  
+  ############### 
+  # CREATE RENTAL
+  ###############
   def createrental
     puts 'Select a book from the following list by number'
     listbooks
@@ -105,6 +114,21 @@ class App
     end
   end
 
+  ############### 
+  # LOAD DATA
+  ###############
+  #LOAD BOOK
+  def load_books
+    return [] unless File.exist?('books.json')
+  
+    data = File.read('books.json')
+    books_data = JSON.parse(data)
+    books_data.map { |book_data| 
+    new_book =Book.new(book_data['title'], book_data['author']) 
+    @books.push(new_book)
+    }
+  end
+
   def load_data
     return unless File.exist?('rentals.json')
   
@@ -126,7 +150,22 @@ class App
     end
   end
   
+  ############### 
+  # SAVE DATA
+  ###############
 
+  # SAVE BOOK
+  def save_books
+    books_data = @books.map do |book|
+      {
+        'title' => book.title,
+        'author' => book.author
+      }
+    end
+    File.write('books.json', JSON.pretty_generate(books_data))
+  end
+
+  #SAVE RENTAL
   def save_data
     rentals_data = @rentals.map do |rental|
       person_data = {
@@ -142,7 +181,6 @@ class App
         'date' => rental.date,
         'book' => {
           'title' => rental.book.title,
-
           'author' => rental.book.author
         },
         'person' => person_data
@@ -151,11 +189,14 @@ class App
     File.write('rentals.json', JSON.pretty_generate(rentals_data))
   end
 
+
+  ############### 
+  # EXIT APP
+  ###############
   def exit_app
     puts 'Thank for using this app!'
     save_data
+    save_books
     exit
   end
 end
-App.new
-# puts load.load_data
