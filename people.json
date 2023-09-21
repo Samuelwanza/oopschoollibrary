@@ -1,0 +1,16 @@
+[
+  {
+    "age": 23,
+    "name": "mahdi",
+    "id": 505,
+    "parent_permission": true,
+    "type": "student"
+  },
+  {
+    "age": "45",
+    "name": "ajmal",
+    "id": 660,
+    "specialization": "teacher",
+    "type": "teacher"
+  }
+]

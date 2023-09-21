@@ -10,6 +10,7 @@ class App
     @rentals = []
     load_books
     load_data
+    load_people
   end
   ############### 
   # CREATE PERSON
@@ -57,14 +58,13 @@ class App
   # list person 
   def listpeople
     @people.each_with_index do |person, index|
-      if person.instance_of?(Student)
-        puts "(#{index}) [Student] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
-      else
-        puts "(#{index}) [Teacher] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
-      end
-    end
+    if person.instance_of?(Student)
+      puts "(#{index}) [Student] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}"
+    elsif person.instance_of?(Teacher)
+      puts "(#{index}) [Teacher] Name: #{person.name}, ID: #{person.id}, Age:#{person.age}, specialization specialization: #{person.specialization}"
   end
-
+end
+end
   ############### 
   # CREATE BOOK
   ###############
@@ -128,7 +128,26 @@ class App
     @books.push(new_book)
     }
   end
-
+  #LOAD PEOPLE 
+  def load_people
+    return unless File.exist?('people.json')
+    
+    data = File.read('people.json')
+    people_data = JSON.parse(data)
+    
+    people_data.each do |person_data|
+      if person_data['type'] == 'teacher'
+        person = Teacher.new(person_data['age'], person_data['specialization'], person_data['name'])
+      elsif person_data['type'] == 'student'
+        person = Student.new(person_data['age'], person_data['name'], person_data['parent_permission'])
+      end
+      
+      person.id = person_data['id']
+      @people.push(person)
+    end
+  end
+  
+  #LOAD DATA
   def load_data
     return unless File.exist?('rentals.json')
   
@@ -165,6 +184,32 @@ class App
     File.write('books.json', JSON.pretty_generate(books_data))
   end
 
+# SAVE PEOPLE
+def save_people
+  people_data = @people.map do |person|
+    if person.is_a?(Teacher)
+      person_data = {
+      'age' => person.age,
+      'name' => person.name,
+      'id' => person.id,
+      'specialization' => person.specialization,
+      'type' => 'teacher'
+    }
+    elsif person.is_a?(Student)
+      person_data = {
+      'age' => person.age,
+      'name' => person.name,
+      'id' => person.id,
+      'parent_permission' => person.parent_permission,
+      'type' => 'student'
+    }
+    end
+    person_data
+  end
+  File.write('people.json', JSON.pretty_generate(people_data))
+end
+
+
   #SAVE RENTAL
   def save_data
     rentals_data = @rentals.map do |rental|
@@ -197,6 +242,7 @@ class App
     puts 'Thank for using this app!'
     save_data
     save_books
+    save_people
     exit
   end
 end
