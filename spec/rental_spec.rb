@@ -2,7 +2,6 @@ require_relative '../rental'
 require_relative '../book'
 require_relative '../student'
 
-
 describe Rental do
   let(:book) { Book.new('Things fall apart', 'Chinua Achebe') }
   let(:person) { Student.new(19, 'Edward', true) }
