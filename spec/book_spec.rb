@@ -10,10 +10,9 @@ describe Book do
     end
     it 'sets the title' do
       expect(new_book.title).to eq('Game of thrones')
-      
     end
     it 'sets the author' do
-        expect(new_book.author).to eq('shelby')
+      expect(new_book.author).to eq('shelby')
     end
   end
 end

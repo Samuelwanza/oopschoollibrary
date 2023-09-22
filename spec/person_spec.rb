@@ -10,7 +10,6 @@ describe Person do
     end
     it 'sets the age of the person' do
       expect(new_person.age).to eq(23)
-      
     end
     it 'sets the name of the person' do
       expect(new_person.name).to eq('Jack')
