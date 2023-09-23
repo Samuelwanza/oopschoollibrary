@@ -11,6 +11,3 @@ describe Teacher do
     end
   end
 end
-
-# context
-# it
